@@ -6,14 +6,14 @@
 /*   By: luis-rod <luis-rod@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 17:45:18 by luis-rod          #+#    #+#             */
-/*   Updated: 2023/10/06 13:59:10 by luis-rod         ###   ########.fr       */
+/*   Updated: 2024/01/21 13:23:39 by luis-rod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 char	*ft_strchr(const char *s, int c)
-{	
+{
 	int	i;
 
 	i = 0;

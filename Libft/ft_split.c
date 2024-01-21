@@ -1,90 +1,99 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: luis-rod <luis-rod@student.42madrid>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/21 13:15:13 by luis-rod          #+#    #+#             */
+/*   Updated: 2024/01/21 13:19:30 by luis-rod         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-static char
-	**ft_alloc_split(char const *s, char c)
+static int	numstring(char const *s1, char c)
 {
-	size_t	i;
-	char	**split;
-	size_t	total;
+	int	comp;
+	int	cles;
 
-	i = 0;
-	total = 0;
-	while (s[i])
+	comp = 0;
+	cles = 0;
+	if (*s1 == '\0')
+		return (0);
+	while (*s1 != '\0')
 	{
-		if (s[i] == c)
-			total++;
-		i++;
+		if (*s1 == c)
+			cles = 0;
+		else if (cles == 0)
+		{
+			cles = 1;
+			comp++;
+		}
+		s1++;
 	}
-	split = (char**)malloc(sizeof(s) * (total + 2));
-	if (!split)
-		return (NULL);
-	return (split);
+	return (comp);
 }
 
-void
-	*ft_free_all_split_alloc(char **split, size_t elts)
+static int	numchar(char const *s2, char c, int i)
 {
-	size_t	i;
+	int	lenght;
 
-	i = 0;
-	while (i < elts)
+	lenght = 0;
+	while (s2[i] != c && s2[i] != '\0')
 	{
-		free(split[i]);
+		lenght++;
 		i++;
 	}
-	free(split);
+	return (lenght);
+}
+
+static char	**freee(char const **dst, int j)
+{
+	while (j > 0)
+	{
+		j--;
+		free((void *)dst[j]);
+	}
+	free(dst);
 	return (NULL);
 }
 
-static void
-	*ft_split_range(char **split, char const *s,
-		t_split_next *st, t_split_next *lt)
+static char	**affect(char const *s, char **dst, char c, int l)
 {
-	split[lt->length] = ft_substr(s, st->start, st->length);
-	if (!split[lt->length])
-		return (ft_free_all_split_alloc(split, lt->length));
-	lt->length++;
-	return (split);
-}
-
-static void
-	*ft_split_by_char(char **split, char const *s, char c)
-{
-	size_t			i;
-	t_split_next	st;
-	t_split_next	lt;
+	int	i;
+	int	j;
+	int	k;
 
 	i = 0;
-	lt.length = 0;
-	lt.start = 0;
-	while (s[i])
+	j = 0;
+	while (s[i] != '\0' && j < l)
 	{
-		if (s[i] == c)
-		{
-			st.start = lt.start;
-			st.length = (i - lt.start);
-			if (i > lt.start && !ft_split_range(split, s, &st, &lt))
-				return (NULL);
-			lt.start = i + 1;
-		}
-		i++;
+		k = 0;
+		while (s[i] == c)
+			i++;
+		dst[j] = (char *)malloc(sizeof(char) * numchar(s, c, i) + 1);
+		if (dst[j] == NULL)
+			return (freee((char const **)dst, j));
+		while (s[i] != '\0' && s[i] != c)
+			dst[j][k++] = s[i++];
+		dst[j][k] = '\0';
+		j++;
 	}
-	st.start = lt.start;
-	st.length = (i - lt.start);
-	if (i > lt.start && i > 0 && !ft_split_range(split, s, &st, &lt))
-		return (NULL);
-	split[lt.length] = 0;
-	return (split);
+	dst[j] = 0;
+	return (dst);
 }
 
-char
-	**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
-	char	**split;
+	char	**dst;
+	int		l;
 
-	if (!(split = ft_alloc_split(s, c)))
+	if (s == NULL)
 		return (NULL);
-	if (!ft_split_by_char(split, s, c))
+	l = numstring(s, c);
+	dst = (char **)malloc(sizeof(char *) * (l + 1));
+	if (dst == NULL)
 		return (NULL);
-	return (split);
+	return (affect(s, dst, c, l));
 }

@@ -6,13 +6,13 @@
 /*   By: luis-rod <luis-rod@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 10:31:09 by luis-rod          #+#    #+#             */
-/*   Updated: 2023/10/06 11:16:42 by luis-rod         ###   ########.fr       */
+/*   Updated: 2024/01/21 13:35:12 by luis-rod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memcpy(void *restrict dst, const void *restrict src, size_t n)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	size_t				i;
 	const unsigned char	*s;
