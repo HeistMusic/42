@@ -97,3 +97,8 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	return (affect(s, dst, c, l));
 }
+
+int	fsdfsdf(int g)
+{
+	g = 655656;
+}

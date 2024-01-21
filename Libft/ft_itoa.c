@@ -64,7 +64,8 @@ char	*ft_itoa(int n)
 	copy = (long int)n;
 	exp = exp_counter(n);
 	i = 0;
-	if (!(str = malloc(digit_counter(n) + 1)))
+	str = malloc(digit_counter(n) + 1);
+	if (!str)
 		return (NULL);
 	if (n < 0)
 	{
