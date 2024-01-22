@@ -36,3 +36,21 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	str[i + j] = 0;
 	return (str);
 }
+
+/*#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+int main ()
+{
+     char *src1;
+     src1 = strdup("me cago");
+	 char *src2;
+     src2 = strdup("en la puta");
+     puts("-------datos--------");
+     puts(src1);
+     puts(src2);
+     puts("-------resultado del codigo--------");
+     puts(ft_strjoin(src1, src2));
+     return(0);
+}*/
