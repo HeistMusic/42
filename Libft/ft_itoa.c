@@ -12,72 +12,69 @@
 
 #include "libft.h"
 
-int	digit_counter(int n)
+int	counter(int n)
 {
-	int	i;
-	int	copy;
+	int	count;
 
-	i = 0;
-	if (n == 0)
+	if (!n)
 		return (1);
-	if (n == -2147483648)
-		return (11);
+	count = 0;
 	if (n < 0)
 	{
-		n = -n;
-		i++;
+		n = n * (-1);
+		count++;
 	}
-	copy = n;
-	while (copy > 0)
+	while (n != 0)
 	{
-		copy = copy / 10;
-		i++;
+		n = n / 10;
+		count++;
 	}
-	return (i);
-}
-
-int	exp_counter(int n)
-{
-	int	exp;
-	int	digits;
-
-	if (n == 0)
-		return (1);
-	if (n == -2147483648)
-		return (1000000000);
-	digits = digit_counter(n);
-	if (n < 0)
-		digits--;
-	exp = 1;
-	while (--digits)
-		exp = exp * 10;
-	return (exp);
+	return (count);
 }
 
 char	*ft_itoa(int n)
 {
-	char		*str;
-	int			exp;
-	int			i;
-	long int	copy;
+	unsigned int	num;
+	int				c;
+	char			*str;
 
-	copy = (long int)n;
-	exp = exp_counter(n);
-	i = 0;
-	str = malloc(digit_counter(n) + 1);
+	str = malloc(sizeof(char) * counter(n) + 1);
 	if (!str)
-		return (NULL);
+		return (0);
+	num = n;
+	c = counter(n) - 1;
+	str[c + 1] = '\0';
+	if (!n)
+		str[0] = '0';
 	if (n < 0)
 	{
-		str[i++] = '-';
-		copy = -copy;
+		str[0] = '-';
+		num = num * (-1);
 	}
-	while (exp > 0)
+	while (num > 0)
 	{
-		str[i++] = (copy / exp) + 48;
-		copy = copy % exp;
-		exp = exp / 10;
+		str[c] = '0' + num % 10;
+		num = num / 10;
+		c--;
 	}
-	str[i] = '\0';
 	return (str);
 }
+
+/*#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+int main ()
+{
+     int nbr;
+     nbr = -42;
+
+     puts("-------datos--------");
+     printf("%d", nbr);
+	 printf("%c", '\n');
+
+     puts("-------resultado del codigo--------");
+     puts(ft_itoa(nbr));
+     
+     return(0);
+}*/

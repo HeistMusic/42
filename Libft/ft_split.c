@@ -12,88 +12,109 @@
 
 #include "libft.h"
 
-static int	numstring(char const *s1, char c)
+static int	sep(char s, char c)
 {
-	int	comp;
-	int	cles;
-
-	comp = 0;
-	cles = 0;
-	if (*s1 == '\0')
-		return (0);
-	while (*s1 != '\0')
-	{
-		if (*s1 == c)
-			cles = 0;
-		else if (cles == 0)
-		{
-			cles = 1;
-			comp++;
-		}
-		s1++;
-	}
-	return (comp);
+	if (s == c)
+		return (1);
+	return (0);
 }
 
-static int	numchar(char const *s2, char c, int i)
+static int	count(char *s, char c)
 {
-	int	lenght;
+	int	words;
+	int	i;
 
-	lenght = 0;
-	while (s2[i] != c && s2[i] != '\0')
+	i = 0;
+	words = 0;
+	while (s[i])
 	{
-		lenght++;
+		if (!sep(s[i], c) && (sep(s[i + 1], c)
+				|| s[i + 1] == '\0'))
+			words++;
 		i++;
 	}
-	return (lenght);
+	return (words);
 }
 
-static char	**freee(char const **dst, int j)
+static void	free_str(char **str)
 {
-	while (j > 0)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		j--;
-		free((void *)dst[j]);
+		free(str[i]);
+		i++;
 	}
-	free(dst);
-	return (NULL);
+	free(str);
 }
 
-static char	**affect(char const *s, char **dst, char c, int l)
+static int	w_str(char **sp, char *s, char c)
 {
 	int	i;
 	int	j;
-	int	k;
+	int	words;
 
 	i = 0;
-	j = 0;
-	while (s[i] != '\0' && j < l)
+	words = 0;
+	while (s[i])
 	{
-		k = 0;
-		while (s[i] == c)
+		if (sep(s[i], c))
 			i++;
-		dst[j] = (char *)malloc(sizeof(char) * numchar(s, c, i) + 1);
-		if (dst[j] == NULL)
-			return (freee((char const **)dst, j));
-		while (s[i] != '\0' && s[i] != c)
-			dst[j][k++] = s[i++];
-		dst[j][k] = '\0';
-		j++;
+		else
+		{
+			j = 0;
+			while (!sep(s[i + j], c) && (s[i + j]))
+				j++;
+			sp[words] = ft_substr(s, i, j);
+			if (sp[words] == NULL)
+				return (free_str(sp), 0);
+			i += j;
+			words++;
+		}
 	}
-	dst[j] = 0;
-	return (dst);
+	return (1);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**dst;
-	int		l;
+	int		words;
+	char	**r;
 
-	if (s == NULL)
-		return (NULL);
-	l = numstring(s, c);
-	dst = (char **)malloc(sizeof(char *) * (l + 1));
-	if (dst == NULL)
-		return (NULL);
-	return (affect(s, dst, c, l));
+	if (!s)
+		return (0);
+	words = count((char *)s, c);
+	r = ft_calloc(words + 1, sizeof(char *));
+	if (!r)
+		return (0);
+	if (!w_str(r, (char *)s, c))
+		return (0);
+	return (r);
 }
+
+/*	char const split[] = "0hola0como0estas0";
+	char separador	= '0';
+	char **resul = ft_split(split, separador);
+	int z = 0;
+
+	if (resul == NULL)
+	{
+		printf("Error al dividir la cadena.\n");
+		return (1);
+	}
+	while (resul[z])
+	{
+		printf("Palabra %d: %s\n", z, resul[z]);
+		z++;
+	}
+	z = 0;
+	
+	while (resul[z] != NULL)
+	{
+		free(resul[z]);
+		z++;
+	}
+	free (resul);
+
+	printf("\n");
+*/
