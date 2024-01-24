@@ -92,7 +92,13 @@ char	**ft_split(char const *s, char c)
 	return (r);
 }
 
-/*	char const split[] = "0hola0como0estas0";
+/*#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+int main()
+{
+	char const split[] = "0hola0como0estas0";
 	char separador	= '0';
 	char **resul = ft_split(split, separador);
 	int z = 0;
@@ -117,4 +123,5 @@ char	**ft_split(char const *s, char c)
 	free (resul);
 
 	printf("\n");
+}
 */
