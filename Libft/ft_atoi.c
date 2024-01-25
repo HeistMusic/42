@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int	skip_whitespaces_minus(char *str, int *ptr_i)
+static int	skip_whitespaces_minus(char *str, int *ptr_i)
 {
 	int		minus_count;
 	int		i;
